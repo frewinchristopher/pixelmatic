@@ -6,7 +6,7 @@ Pixelmatic is a Perl script that converts a bitmap image. All that is needed is 
 
 Firstly the prerequisites for running Pixelmatic are Perl, Sass, and HAML.
 
-The easiest way to get a starting example is running: `perl pixelmatic.pl thewave.png` (I have included thewave.png, a 80 x 55 pixel image here for your testing enjoyment.)
+The easiest way to get a starting example is running: `perl pixelmatic.pl thewave.png` or, if you prefer pokemon, `perl pixelmatic.pl shiny_charizard.png` (I have included thewave.png, a 80 x 55 pixel image here for your testing enjoyment.)
 
 Upon runtime, a host of files are generated, in the following order,
 
@@ -23,9 +23,10 @@ Pixel art is neat for websites, but I couldn't find a tool that would generate a
 
 ## Known Issues
 
-Because of the nature of what Pixelmatic is doing - creating a small div for every pixel in an image - it is optimally suited for .ico and small bitmaps. The run time because quite long for images larger than 200 x 200 with a single core machine, perhaps even prohibitively so. 
+Because of the nature of what Pixelmatic is doing - creating a small div for every pixel in an image - it is optimally suited for .ico and small bitmaps. The run time because quite long for images larger than 200 x 200 with a single core machine, perhaps even prohibitively so.
+
+I've also had a pain installing Image::Magick on mac OSX, that still hasnt been resolved, I always have to use my linux machine to run `pixelmatic.pl` :joy:
 
 ## Installation
 
 Simply clone this repo to get access to the pixelmatic.pl script. It is recommended to run the test command first, but you can pass any valid file path to the Pixelmatic.
-

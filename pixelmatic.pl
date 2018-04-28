@@ -15,8 +15,14 @@ use Image::Size;
 # =========================================== #
 # Get input - series of names and image paths #
 # =========================================== #
-for (my $i=0; $i<scalar(@ARGV); $i+=2) {
-  push(@imageNames,$ARGV[$i]); # second in pair: path to image
+
+my $imageName = $ARGV[0]; # second in pair: path to image
+my $animationFlag;
+if ($ARGV[1]) {
+  print "Animation option detected...\n";
+  $animationFlag = $ARGV[1]; # second in pair: path to image
+} else {
+  $animationFlag = "";
 }
 
 # =======================================================================================================================================================
@@ -29,8 +35,8 @@ open HT, ">index.html" or die "Cannot open HTML file: $!";
 
 # place library here to read image and put color data into array colors //TODO: implement "number of colors option"
 my $image = Image::Magick->new or die;
-my $read = $image -> Read($imageNames[0]);
-(my $imageWidth, my $imageHeight) = imgsize($imageNames[0]);
+my $read = $image -> Read($imageName);
+(my $imageWidth, my $imageHeight) = imgsize($imageName);
 my $numPixels = $imageWidth * $imageHeight;
 
 # build flat array of x colors
@@ -116,10 +122,12 @@ for (my$i=0;$i<$lengthColors;$i++) {
   print S "\tleft: \$pixel-size * $x; top: \$pixel-size * $y;\n"; # x and y positions
   print S "\twidth: \$pixel-size; height: \$pixel-size;\n"; # x and y positions
   print S "\tbackground-color: $colorMap{$colors[$i]};\n";
-  print S "\tanimation: slideIn 3s infinite;\n";
-  print S "\tanimation-delay: $delay s;\n";
+  if ($animationFlag eq "-a") { # CHFE 28 April 2018 - animation flag!
+    print S "\tanimation: slideIn 3s infinite;\n";
+    print S "\tanimation-delay: $delay s;\n";
+  }
   print S "}\n";
-  if ($x == $imageWidth - 1) { # CHFE 25 Aoril 2017 - subtract 1 since perl is 0 indexed
+  if ($x == $imageWidth - 1) { # CHFE 25 April 2017 - subtract 1 since perl is 0 indexed
     $x = 0;
     $y = $y + 1
   } else {
@@ -128,12 +136,14 @@ for (my$i=0;$i<$lengthColors;$i++) {
 }
 
 # define slide animation:
-print S "\@keyframes slideIn {\n";
-print S "\t0% {\n";
-print S "\t\ttransform: translateX(-900px);\n";
-print S "\t}\n";
-print S "\t100% { transform: translateX(0); }\n";
-print S "}\n";
+if ($animationFlag eq "-a") { # CHFE 28 April 2018 - animation flag!
+  print S "\@keyframes slideIn {\n";
+  print S "\t0% {\n";
+  print S "\t\ttransform: translateX(-900px);\n";
+  print S "\t}\n";
+  print S "\t100% { transform: translateX(0); }\n";
+  print S "}\n";
+}
 
 print S "\n";
 
